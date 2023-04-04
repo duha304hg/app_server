@@ -4,8 +4,9 @@ const http = require('http');
 const socket = require('socket.io');
 const mysql = require('mysql')
 const server = http.createServer();
+const express = require('express');
 const app = express();
-const port = 10000;
+const port = process.env.PORT || 10000;
 
 var pool = mysql.createPool({
     host: 'localhost',
@@ -15,18 +16,8 @@ var pool = mysql.createPool({
 });
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello world</h1>');
-});
-
-var sql = 'SELECT * FROM userdata';
-/*
-pool.query(sql, function(error,result){
-    if(error) console.log('Error: ', error);
-    console.log('– USER TABLE — ' , result);
-    //res.json(result); // Trả kết quả về cho client dưới dạng json
-});
-*/
-const { addUser, removeUser, getUser } = require("./users");
+    res.send('<h1>Hello world</h1>');
+  });
 
 var io = socket(server, {
 });
@@ -83,18 +74,6 @@ io.on('connection', socket => {
         console.log('user disconnected');
     });
   });
-
-/*
-var io = socket(server, {
-    transports: ["polling"]
-});
-
-io.on('connection', socket => {
-    console.log("test");
-    socket.emit("hi","hello");
-});*/
-
-//app.get("/*", (req, res) => res.send("You have reached a Socket.io server"));
 
 server.listen(port, () => {
     console.log(`Port: ${port}`);
