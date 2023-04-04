@@ -4,6 +4,7 @@ const http = require('http');
 const socket = require('socket.io');
 const mysql = require('mysql')
 const server = http.createServer();
+const app = express();
 const port = 10000;
 
 var pool = mysql.createPool({
@@ -13,6 +14,9 @@ var pool = mysql.createPool({
     database: 'mydatabase'
 });
 
+app.get('/', (req, res) => {
+  res.send('<h1>Hello world</h1>');
+});
 
 var sql = 'SELECT * FROM userdata';
 /*
